@@ -7,7 +7,8 @@ const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const serverUrl = "http://localhost:3000";
+  // const serverUrl = "http://localhost:3000";
+  const serverUrl = import.meta.env.VITE_API_URL;
 
   const [frontendImage, setFrontendImage] = useState(null);
   const [backendImage, setBackendImage] = useState(null);
