@@ -7,7 +7,7 @@ const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const serverUrl = "http://localhost:3000";
+  const serverUrl = "https://virtual-assistant-npca.onrender.com";
   
 
   const [frontendImage, setFrontendImage] = useState(null);
