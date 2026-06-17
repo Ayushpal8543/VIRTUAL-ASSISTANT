@@ -99,13 +99,43 @@ export const askToAssistant = async (req, res) => {
             //         userInput: result.userInput,
             //         response: `month is ${moment().format("MMMM")}`
             //     })
+            // case 'get_time':
+            //     const tz_time = result.timezone || "Asia/Kolkata";
+            //     return res.json({
+            //         type,
+            //         lang,
+            //         userInput: result.userInput,
+            //         response: `current time in ${tz_time.split("/")[1] || tz_time} is ${moment().tz(tz_time).format("hh:mm A")}`
+            //     })
+            // case 'get_date':
+            //     const tz_date = result.timezone || "Asia/Kolkata";
+            //     return res.json({
+            //         type,
+            //         lang,
+            //         userInput: result.userInput,
+            //         response: `current date in ${tz_date.split("/")[1] || tz_date} is ${moment().tz(tz_date).format("DD-MM-YYYY")}`
+            //     })
+            // case 'get_day':
+            //     return res.json({
+            //         type,
+            //         lang,
+            //         userInput: result.userInput,
+            //         response: `today is ${moment().tz("Asia/Kolkata").format("dddd")}`
+            //     })
+            // case 'get_month':
+            //     return res.json({
+            //         type,
+            //         lang,
+            //         userInput: result.userInput,
+            //         response: `month is ${moment().tz("Asia/Kolkata").format("MMMM")}`
+            //     })
             case 'get_time':
                 const tz_time = result.timezone || "Asia/Kolkata";
                 return res.json({
                     type,
                     lang,
                     userInput: result.userInput,
-                    response: `current time in ${tz_time.split("/")[1] || tz_time} is ${moment().tz(tz_time).format("hh:mm A")}`
+                    response: `current time is ${moment.tz(tz_time).format("hh:mm A")}`
                 })
             case 'get_date':
                 const tz_date = result.timezone || "Asia/Kolkata";
@@ -113,21 +143,21 @@ export const askToAssistant = async (req, res) => {
                     type,
                     lang,
                     userInput: result.userInput,
-                    response: `current date in ${tz_date.split("/")[1] || tz_date} is ${moment().tz(tz_date).format("DD-MM-YYYY")}`
+                    response: `current date is ${moment.tz(tz_date).format("DD-MM-YYYY")}`
                 })
             case 'get_day':
                 return res.json({
                     type,
                     lang,
                     userInput: result.userInput,
-                    response: `today is ${moment().tz("Asia/Kolkata").format("dddd")}`
+                    response: `today is ${moment.tz("Asia/Kolkata").format("dddd")}`
                 })
             case 'get_month':
                 return res.json({
                     type,
                     lang,
                     userInput: result.userInput,
-                    response: `month is ${moment().tz("Asia/Kolkata").format("MMMM")}`
+                    response: `month is ${moment.tz("Asia/Kolkata").format("MMMM")}`
                 })
             default:
                 return res.json(result) 
