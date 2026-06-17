@@ -14,7 +14,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["https://virtual-assistant-npca.onrender.com","https://virtual-assistant-eight-theta.vercel.app"
+    origin: ["https://virtual-assistant-npca.onrender.com","https://virtaul1.vercel.app"
   ],
     credentials: true,
   })
