@@ -54,7 +54,7 @@ export const askToAssistant = async (req, res) => {
         const userName = user.name
         const assistantName = user.assistantName
 
-        const result = await geminiResponse(command, assistantName, userName, currentLang) // ✅ currentLang pass kiya
+        const result = await geminiResponse(command, assistantName, userName, currentLang) 
 
         if (!result) {
             return res.status(400).json({ response: "sorry, i can't understand" })
@@ -99,7 +99,7 @@ export const askToAssistant = async (req, res) => {
                     response: `month is ${moment().format("MMMM")}`
                 })
             default:
-                return res.json(result) // ✅ lang bhi result mein hoga
+                return res.json(result) 
         }
     } catch (error) {
         console.log(error)

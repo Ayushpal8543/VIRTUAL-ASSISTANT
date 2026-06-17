@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { userDataContext } from '../context/userContext'
 import { useNavigate } from 'react-router-dom'
-import ParticleBackground from '../components/ParticleBackground'  // ✅ closing quote fix
+import ParticleBackground from '../components/ParticleBackground'  
 
 function Home() {
   const { userData, serverUrl, setUserData } = useContext(userDataContext)
@@ -16,7 +16,7 @@ function Home() {
   const [history, setHistory] = useState([])
   const recognitionRef = useRef(null)
   const isSpeakingRef = useRef(false)
-  const preferredLangRef = useRef('en-US')  // ✅ closing paren fix
+  const preferredLangRef = useRef('en-US') 
 
   const handleLogOut = async () => {
     try {
@@ -27,40 +27,40 @@ function Home() {
       setUserData(null)
       console.log(error)
     }
-  }  // ✅ closing brace fix
+  }  
 
   const speak = (text, lang = 'en-US') => {
     window.speechSynthesis.cancel()
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = lang
     utterance.rate = 1
-    utterance.pitch = 1  // ✅ missing value fix
+    utterance.pitch = 1  
     utterance.onstart = () => {
       isSpeakingRef.current = true
       setIsSpeakingState(true)
       setIsListening(false)
       recognitionRef.current?.stop()
-    }  // ✅ closing brace fix
+    }  
     utterance.onend = () => {
       isSpeakingRef.current = false
       setIsSpeakingState(false)
       setAiText("")
       setUserText("")
       recognitionRef.current?.start()
-    }  // ✅ closing brace fix
+    }  
     window.speechSynthesis.speak(utterance)
   }
 
   const handleCommand = (data) => {
     const { type, userInput, response, query, location, language, text, appName, lang } = data  // ✅ 'dat' → 'data'
-    setAiText(response)  // ✅ closing paren fix
+    setAiText(response)  
     setHistory(prev => [...prev, {
       user: userInput,
       ai: response,
       time: new Date().toLocaleTimeString()
     }])
     if (lang) preferredLangRef.current = lang
-    speak(response, lang || preferredLangRef.current)  // ✅ closing paren fix
+    speak(response, lang || preferredLangRef.current) 
 
     const openUrl = (url) => {
        const a = document.createElement('a')
@@ -100,20 +100,20 @@ function Home() {
     if (type === 'email_open') openUrl('https://mail.google.com')
     if (type === 'notes_open') openUrl('https://keep.google.com')
     if (type === 'app_open') openUrl(`https://www.google.com/search?q=${encodeURIComponent(appName || userInput)}`)
-  }  // ✅ closing brace fix
+  }  
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     const recognition = new SpeechRecognition()
     recognitionRef.current = recognition
     recognition.continuous = true
-    recognition.lang = 'en-US'  // ✅ closing quote fix
+    recognition.lang = 'en-US'  
      recognition.onresult = async (e) => {
        const transcript = e.results[e.results.length - 1][0].transcript.trim()
        console.log("heard: " + transcript)
-       if (isSpeakingRef.current) return  // ✅ 'retur' → 'return'
+       if (isSpeakingRef.current) return  
        setIsListening(true)
-       setUserText(transcript)  // ✅ closing paren fix
+       setUserText(transcript)  
        if (transcript.toLowerCase().includes(userData.assistantName.toLowerCase())) {
          try {
            const result = await axios.post(
@@ -131,14 +131,14 @@ function Home() {
        } else {
          setTimeout(() => setIsListening(false), 1500)
        }
-     }  // ✅ closing brace fix
+     }  
     recognition.onend = () => { if (!isSpeakingRef.current) recognition.start() }
     recognition.onerror = (e) => {
       if (e.error !== 'aborted' && !isSpeakingRef.current) recognition.start()
     }
     recognition.start()
     return () => { recognition.onend = null; recognition.abort() }
-  }, [userData, serverUrl])  // ✅ closing bracket & paren fix
+  }, [userData, serverUrl])  
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-t from-black to-[#02023d] flex flex-col items-center justify-center px-4 py-6 gap-[20px]" style={{ position: 'relative', overflow: 'hidden' }}>  {/* ✅ closing > fix */}
@@ -160,7 +160,7 @@ function Home() {
           from { transform: translateX(100%); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
         }
-      `}</style>  {/* ✅ closing > fix */}
+      `}</style>  
 
       {menuOpen && (
         <div onClick={() => setMenuOpen(false)} style={{
@@ -169,7 +169,7 @@ function Home() {
           background: 'rgba(0,0,0,0.4)',
           zIndex: 40
         }} />
-      )}  {/* ✅ closing paren fix */}
+      )}  
 
       {menuOpen && (
         <div style={{
@@ -191,7 +191,7 @@ function Home() {
               color: 'white', fontSize: '18px', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>✕</button>
-          </div>  {/* ✅ closing > fix */}
+          </div>  
 
           <div style={{ textAlign: 'center', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
             <p style={{ color: 'white', fontWeight: 'bold', fontSize: '16px', margin: 0 }}>{userData?.name}</p>
@@ -205,7 +205,7 @@ function Home() {
             borderRadius: '12px', color: 'white', fontSize: '15px',
             cursor: 'pointer', fontWeight: '600',
             display: 'flex', alignItems: 'center', gap: '10px'
-          }}>🎨 Customize Assistant</button>  {/* ✅ closing > fix */}
+          }}>🎨 Customize Assistant</button>  
 
           <button onClick={handleLogOut} style={{
             width: '100%', padding: '14px',
@@ -225,7 +225,7 @@ function Home() {
                   color: '#ef4444', fontSize: '11px', cursor: 'pointer'
                 }}>Clear</button>
               )}
-            </div>  {/* ✅ closing > fix */}
+            </div> 
             <div style={{
               flex: 1, overflowY: 'auto',
               display: 'flex', flexDirection: 'column', gap: '10px', paddingRight: '4px'
@@ -249,7 +249,7 @@ function Home() {
             </div>
           </div>
         </div>
-      )}  {/* ✅ closing paren fix */}
+      )}  
 
       <button onClick={() => setMenuOpen(true)} style={{
         position: 'absolute', top: '20px', right: '20px',
@@ -263,7 +263,7 @@ function Home() {
         <div style={{ width: '20px', height: '2px', background: 'white', borderRadius: '2px' }} />
         <div style={{ width: '20px', height: '2px', background: 'white', borderRadius: '2px' }} />
         <div style={{ width: '20px', height: '2px', background: 'white', borderRadius: '2px' }} />
-      </button>  {/* ✅ closing > fix */}
+      </button>  
 
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div style={{
@@ -277,7 +277,7 @@ function Home() {
           transition: 'box-shadow 0.4s ease'
         }}>
           <img src={userData.assistantImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>  {/* ✅ closing > fix */}
+        </div>  
 
         {isListening && (
           <div style={{
@@ -294,7 +294,7 @@ function Home() {
               <line x1="8" y1="22" x2="16" y2="22"/>
             </svg>
           </div>
-        )}  {/* ✅ closing paren fix */}
+        )}  
 
         {isSpeakingState && (
           <div style={{ position: 'relative', marginTop: '16px', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -316,9 +316,9 @@ function Home() {
             </div>
           </div>
         )}
-      </div>  {/* ✅ closing > fix */}
+      </div>  
 
-      <h1 className='text-white text-[18px] font-semibold relative z-10'>I'm {userData?.assistantName}</h1>  {/* ✅ closing > fix */}
+      <h1 className='text-white text-[18px] font-semibold relative z-10'>I'm {userData?.assistantName}</h1> 
 
       {userText && (
         <div style={{
@@ -330,7 +330,7 @@ function Home() {
         }}>
           <p style={{ color: '#93c5fd', fontSize: '14px', margin: 0 }}>🎤 {userText}</p>
         </div>
-      )}  {/* ✅ closing paren fix */}
+      )}  
 
       {aiText && (
         <div style={{

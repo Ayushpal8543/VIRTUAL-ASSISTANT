@@ -14,7 +14,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin:[ "http://localhost:5173","https://virtual-assistant-r6k0.onrender.com"],
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );

@@ -7,8 +7,8 @@ const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // const serverUrl = "http://localhost:3000";
-  const serverUrl = import.meta.env.VITE_API_URL;
+  const serverUrl = "http://localhost:3000";
+  
 
   const [frontendImage, setFrontendImage] = useState(null);
   const [backendImage, setBackendImage] = useState(null);
@@ -19,7 +19,7 @@ const UserContext = ({ children }) => {
       const result = await axios.get(
         `${serverUrl}/api/user/current`,
         {
-          withCredentials: true, // cookies send karne ke liye
+          withCredentials: true, 
         }
       );
 
