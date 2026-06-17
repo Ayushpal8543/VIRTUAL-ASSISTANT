@@ -38,8 +38,8 @@ Action types and when to use them:
 - "google_search" → search something on google
 - "youtube_search" → search something on youtube
 - "youtube_play" → play a specific song/video on youtube
-- "get_time" → user asks current time
-- "get_date" → user asks current date
+- "get_time" → user asks current time (add "timezone": "<IANA timezone if specific country/city mentioned, else 'Asia/Kolkata'>")
+- "get_date" → user asks current date (add "timezone": "<IANA timezone if specific country/city mentioned, else 'Asia/Kolkata'>")
 - "get_day" → user asks current day
 - "get_month" → user asks current month
 - "calculator_open" → open calculator
