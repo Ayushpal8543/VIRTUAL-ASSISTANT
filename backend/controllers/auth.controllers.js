@@ -14,20 +14,27 @@ const sendOTP = async (email, otp) => {
     },
     family: 4,
   });
+  try {
+    await transporter.sendMail({
+      from: `"Virtual Assistant" <${process.env.EMAIL}>`,
+      to: email,
+      subject: "Verify Your Email - Virtual Assistant",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>Email Verification</h2>
+          <p>Your OTP code is:</p>
+          <h1 style="color: #1b2cff;">${otp}</h1>
+          <p>Valid for 5 minutes.</p>
+        </div>
+      `,
+    });
 
-  await transporter.sendMail({
-    from: `"Virtual Assistant" <${process.env.EMAIL}>`,
-    to: email,
-    subject: "Verify Your Email - Virtual Assistant",
-    html: `
-      <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>Email Verification</h2>
-        <p>Your OTP code is:</p>
-        <h1 style="color: #1b2cff;">${otp}</h1>
-        <p>Valid for 5 minutes.</p>
-      </div>
-    `,
-  });
+    console.log("OTP email sent successfully");
+  } catch (error) {
+    console.error("EMAIL ERROR:", error);
+    throw error;
+  }
+
 };
 
 export const signUp = async (req, res) => {
@@ -67,10 +74,20 @@ export const signUp = async (req, res) => {
       message: "OTP sent successfully",
       email: user.email,
     });
-  } catch (error) {
+  }
+  // catch (error) {
+  //    return res.status(500).json({
+  //      message: `sign up error ${error}`,
+  //    });
+  catch (error) {
+    console.error("SIGNUP ERROR:", error);
+  
     return res.status(500).json({
-      message: `sign up error ${error}`,
-    });
+      success: false,
+      message: error.message,
+  });
+
+  
   }
 };
 
