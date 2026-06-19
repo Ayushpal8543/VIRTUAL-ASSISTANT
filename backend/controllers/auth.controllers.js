@@ -68,7 +68,7 @@ export const signUp = async (req, res) => {
       isVerified: false,
     });
 
-    await sendOTP(email, otp);
+    // await sendOTP(email, otp);
 
     return res.status(201).json({
       message: "OTP sent successfully",
@@ -265,7 +265,7 @@ export const resetPassword = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "User not found",
+        message: "User not found", 
       });
     }
 
