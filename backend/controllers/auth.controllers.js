@@ -12,6 +12,7 @@ const sendOTP = async (email, otp) => {
       user: process.env.EMAIL,
       pass: process.env.EMAIL_PASS,
     },
+    family: 4,
   });
 
   await transporter.sendMail({
