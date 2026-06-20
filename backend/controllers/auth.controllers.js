@@ -68,7 +68,7 @@ export const signUp = async (req, res) => {
       isVerified: false,
     });
 
-    // await sendOTP(email, otp);
+    await sendOTP(email, otp);
 
     return res.status(201).json({
       message: "OTP sent successfully",
