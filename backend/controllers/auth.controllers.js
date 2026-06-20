@@ -4,17 +4,13 @@ import bcrypt from "bcryptjs";
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const brevo = require("@getbrevo/brevo");
+const { BrevoClient } = require("@getbrevo/brevo");
 
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
+const brevoClient = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
 
 const sendOTP = async (email, otp) => {
   try {
-    await apiInstance.sendTransacEmail({
+    await brevoClient.transactionalEmails.sendTransacEmail({
       sender: {
         email: process.env.EMAIL,
         name: "Virtual Assistant",
