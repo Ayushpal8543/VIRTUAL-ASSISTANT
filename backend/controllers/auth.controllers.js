@@ -1,17 +1,24 @@
 import genToken from "../config/token.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import  {Resend}  from "resend";
+import * as Brevo from "@getbrevo/brevo";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const apiInstance = new Brevo.TransactionalEmailsApi();
+apiInstance.setApiKey(
+  Brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY
+);
 
 const sendOTP = async (email, otp) => {
   try {
-    const { data, error } = await resend.emails.send({
-      from: "Virtual Assistant <onboarding@resend.dev>",
-      to: email,
+    await apiInstance.sendTransacEmail({
+      sender: {
+        email: process.env.EMAIL,
+        name: "Virtual Assistant",
+      },
+      to: [{ email }],
       subject: "Verify Your Email - Virtual Assistant",
-      html: `
+      htmlContent: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
           <h2>Email Verification</h2>
           <p>Your OTP code is:</p>
@@ -21,12 +28,7 @@ const sendOTP = async (email, otp) => {
       `,
     });
 
-    if (error) {
-      console.error("EMAIL ERROR:", error);
-      throw error;
-    }
-
-    console.log("OTP email sent successfully:", data);
+    console.log("OTP email sent successfully");
   } catch (error) {
     console.error("EMAIL ERROR:", error);
     throw error;
