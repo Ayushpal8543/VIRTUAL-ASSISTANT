@@ -1,22 +1,14 @@
-
 import genToken from "../config/token.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import nodemailer from "nodemailer";
+import  Resend  from "resend";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendOTP = async (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
-    },
-    family: 4,
-  });
   try {
-    await transporter.sendMail({
-      from: `"Virtual Assistant" <${process.env.EMAIL}>`,
+    const { data, error } = await resend.emails.send({
+      from: "Virtual Assistant <onboarding@resend.dev>",
       to: email,
       subject: "Verify Your Email - Virtual Assistant",
       html: `
@@ -29,12 +21,16 @@ const sendOTP = async (email, otp) => {
       `,
     });
 
-    console.log("OTP email sent successfully");
+    if (error) {
+      console.error("EMAIL ERROR:", error);
+      throw error;
+    }
+
+    console.log("OTP email sent successfully:", data);
   } catch (error) {
     console.error("EMAIL ERROR:", error);
     throw error;
   }
-
 };
 
 export const signUp = async (req, res) => {
@@ -74,20 +70,13 @@ export const signUp = async (req, res) => {
       message: "OTP sent successfully",
       email: user.email,
     });
-  }
-  // catch (error) {
-  //    return res.status(500).json({
-  //      message: `sign up error ${error}`,
-  //    });
-  catch (error) {
+  } catch (error) {
     console.error("SIGNUP ERROR:", error);
-  
+
     return res.status(500).json({
       success: false,
       message: error.message,
-  });
-
-  
+    });
   }
 };
 
@@ -153,18 +142,12 @@ export const Login = async (req, res) => {
 
     const token = await genToken(user._id);
 
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   maxAge: 7 * 24 * 60 * 60 * 1000,
-    //   sameSite: "lax",
-    //   secure: false,
-    // });
     res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 7 * 24 * 60 * 60 * 1000
-});
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(200).json(user);
   } catch (error) {
@@ -265,7 +248,7 @@ export const resetPassword = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({
-        message: "User not found", 
+        message: "User not found",
       });
     }
 
