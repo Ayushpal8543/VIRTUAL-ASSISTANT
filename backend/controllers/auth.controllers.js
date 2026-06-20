@@ -1,13 +1,14 @@
 import genToken from "../config/token.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import brevoPkg from "@getbrevo/brevo";
+import { createRequire } from "module";
 
-const { TransactionalEmailsApi, TransactionalEmailsApiApiKeys } = brevoPkg;
+const require = createRequire(import.meta.url);
+const brevo = require("@getbrevo/brevo");
 
-const apiInstance = new TransactionalEmailsApi();
+const apiInstance = new brevo.TransactionalEmailsApi();
 apiInstance.setApiKey(
-  TransactionalEmailsApiApiKeys.apiKey,
+  brevo.TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY
 );
 
